@@ -4,6 +4,8 @@ require_once("lib/ConfigManager.php");
 session_start();
 
 $_SESSION["Client"] = ConfigManager::DetectClient($_GET["from"]);
+$_SESSION["ReturnURL"] = $_GET["from"];
+
 $AuthClient = $_SESSION["Client"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
@@ -25,7 +27,6 @@ $AuthClient = $_SESSION["Client"];
 	<form id="login-box" method="POST" action="sso.php"> 
 		<strong><?php echo $AuthClient->GetSetting("SSO_Title"); ?></strong> 
 		<em id="login-feedback"><?php echo $AuthClient->GetSetting("SSO_Subtext"); ?></em>
-		<input type="hidden" name="origin" id="origin" value="<?php echo $_GET["from"] ?>" />
 		<input type="text" name="username" value="username" id="username"> 
 		<input type="password" name="password" id="password"> 
 		<button type="submit" id="login-button">Log In</button> 
