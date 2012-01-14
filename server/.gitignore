@@ -1,1 +1,3 @@
 etc/config.inc.php
+etc/users
+etc/groups
