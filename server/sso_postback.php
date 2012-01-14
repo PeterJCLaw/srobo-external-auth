@@ -3,10 +3,21 @@
 require_once("lib/ConfigManager.php");
 
 session_start();
+if(!isset($_SESSION["Client"])){
+	// Oops - no client class available
+	header("Location: index.php"); //Redirect back to the index.
+}
 
+// Get hold of the client.
 $AuthClient = $_SESSION["Client"];
 
+// Get the display name through the client.
 $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
+
+// Get the SSO data to pass to the remote site.
+$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"]);
+
+// Render a "We'll transfer you when you click this button"
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html> 
@@ -35,8 +46,10 @@ $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
 		<form action="<?php echo $_SESSION["ReturnURL"]; ?>" method='POST'>
 			<input type='hidden' name='sso_data' value="<?php echo $SSO_Data; ?>" />
 			<div id='info'>
-				You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
-				Your single-sign-on session will continue for one hour, after which you will be prompted for a username and password again.
+				<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
+				Your single-sign-on session will continue for one hour, after which you will be prompted for a username and password again.</p>
+				<p>When you click the button below, you may recieve a warning about posting data to a remote site.
+				This is to be expected - because it's <b>exactly</b> what you are trying to do!</p>
 			</div>
 			<input type='submit' value="Complete your logon" />
 		</form>
