@@ -4,7 +4,10 @@ require_once("lib/ConfigManager.php");
 session_start();
 
 $_SESSION["Client"] = ConfigManager::DetectClient($_GET["from"]);
+if($_SESSION["Client"] == NULL) header("Location: unidentified_source.php");
 $_SESSION["ReturnURL"] = $_GET["from"];
+
+if(isset($_SESSION["SSO_Username"])) header("Location: sso_postback.php");
 
 $AuthClient = $_SESSION["Client"];
 ?>
