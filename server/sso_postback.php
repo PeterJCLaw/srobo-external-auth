@@ -14,8 +14,13 @@ $AuthClient = $_SESSION["Client"];
 // Get the display name through the client.
 $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
 
-// Get the SSO data to pass to the remote site.
-$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"]);
+try{
+	// Get the SSO data to pass to the remote site.
+	$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"]);
+}catch(Exception $ex){
+	$_SESSION["SSO_Error"] = $ex;
+	header("Location: sso_error.php");
+}
 
 // Render a "We'll transfer you when you click this button"
 ?>
@@ -43,16 +48,18 @@ $SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"]);
 		<div id="static-box"><img src="web/images/static.png" alt="logo"></div> 
 	</div> 
 	<div id='page'>
-		<form action="<?php echo $_SESSION["ReturnURL"]; ?>" method='POST'>
-			<input type='hidden' name='sso_data' value="<?php echo $SSO_Data; ?>" />
-			<div id='info'>
-				<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
-				Your single-sign-on session will continue for one hour, after which you will be prompted for a username and password again.</p>
-				<p>When you click the button below, you may recieve a warning about posting data to a remote site.
-				This is to be expected - because it's <b>exactly</b> what you are trying to do!</p>
-			</div>
-			<input type='submit' value="Complete your logon" />
-		</form>
+		<p>
+			<form action="<?php echo $_SESSION["ReturnURL"]; ?>" method='POST'>
+				<input type='hidden' name='sso_data' value="<?php echo $SSO_Data; ?>" />
+				<div id='info'>
+					<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
+					Your single-sign-on session will continue for one hour, after which you will be prompted for a username and password again.</p>
+					<p>When you click the button below, you may recieve a warning about posting data to a remote site.
+					This is to be expected - because it's <b>exactly</b> what you are trying to do!</p>
+				</div>
+				<input type='submit' value="Complete your logon" />
+			</form>
+		</p>
 	</div>
 </body>
 </html>
