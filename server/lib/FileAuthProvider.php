@@ -31,6 +31,19 @@ class FileAuthProvider extends AuthProvider {
 		return false;
 	}
 
+	public function GetDisplayName($username){
+		$userFile = fopen($this->usersFile, "r");
+		while(!feof($userFile)){
+			$userLine = trim(fgets($userFile));
+			$userLine = explode(":", $userLine);
+			$userLineUsername = $userLine[0];
+			if($userLineUsername == $username)
+				return $userLine[2];
+		}
+		fclose($userFile);
+		return null;
+	}
+
 }
 
 ?>
