@@ -1,0 +1,23 @@
+Source: libsrsso
+Section: libs
+Priority: extra
+Maintainer: Chris Malton <cmalton@studentrobotics.org>
+Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 4.2.0), config-package-dev (>= 4.5~)
+Standards-Version: 3.8.0
+
+Package: libsrsso-client
+Architecture: all
+Depends: php
+Description: Student Robotics Single Sign On - Client
+ This package installs the Student Robotics Single Sign On client libraries
+ for use with (for example) the network logon portal.
+
+Package: libsrsso-server
+Architecture: all
+Depends: apache2, php (>= 5.2.0)
+Provides: 
+Conflicts: 
+Description: Student Robotics Single Sign On - Server
+ This package installs the Student Robotics Single Sign On server, which
+ contains all the files to allow this computer to act as a Single-Sign-On
+ server.

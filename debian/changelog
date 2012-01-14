@@ -1,0 +1,5 @@
+libsrsso (0.1) squeeze; urgency=low
+  * Initial build of the Student Robotics Single-Sign-On library
+
+ -- Chris Malton <cmalton@studentrobotics.org>  Sat, 14 Jan 2012 12:13:00 +0000
+

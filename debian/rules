@@ -1,0 +1,7 @@
+#!/usr/bin/make -f
+
+DEB_DIVERT_EXTENSION = .sr
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/config-package.mk
+include /usr/share/cdbs/1/rules/divert.mk
