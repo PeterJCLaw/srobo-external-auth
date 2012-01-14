@@ -44,6 +44,21 @@ class FileAuthProvider extends AuthProvider {
 		return null;
 	}
 
+	public function GetGroups($username){
+		$groups = array();
+		$groupFile = fopen($this->groupFile, "r");
+		while(!feof($groupFile)){
+			$groupLine = trim(fgets($groupFile));
+			$groupLine = explode(":", $groupLine);
+			$groupLineGroupName = $groupLine[0];
+			$groupLineGroupUsers = split(",", $groupLine[1]);
+			if(in_array($username, $groupLineGroupUsers))
+				$groups[] = $groupLineGroupName;
+		}
+		fclose($userFile);
+		return $groups;
+	}
+
 }
 
 ?>
