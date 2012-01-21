@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * A simple auth provider, based on JSON files.
+ * users.json:
+{
+	"$username" :
+		{
+			"password" : "<sha1-hash>",
+			"display-name" : "$displayName"
+		}
+	// , ...
+}
+ * groups.json:
+{
+	"$groupname" :
+		[
+			"$username"
+			// , ...
+		]
+	// , ...
+}
+ */
+
 require_once("lib/AuthProvider.php");
 
 class JSONFileAuthProvider extends AuthProvider {
