@@ -2,7 +2,7 @@
 
 
 class ConfigManager {
-	
+
 	private static $Clients = array();
 
 	public static function AddClient($clientObject){
