@@ -7,6 +7,9 @@ class SSOClient {
 	private $url = null;
 	private $private_key = null;
 
+	const POST_KEY = 'sso_data';	// the key the server uses to post data at us.
+	const SESSION_KEY = 'SSO_Data';	// the key we use for data we store in the session.
+
 	/**
 	 * Create a new SSOClient.
 	 * @param sso_url: The url of the SSO srever.
@@ -22,21 +25,21 @@ class SSOClient {
 
 	public function DoSSO(){
 		session_start();
-		if(isset($_SESSION["sr_sso_token"])) return;
+		if(isset($_SESSION[self::SESSION_KEY])) return;
 
 		// No token, and no post data.
-		if(!isset($_POST["sso_data"])){
+		if(!isset($_POST[self::POST_KEY])){
 			$this->redirect();
 			return;
 		}
 
 		// SSO data is set, we may have a valid postback
-		$SSO_Data = base64_decode($_POST["sso_data"]);
+		$SSO_Data = base64_decode($_POST[self::POST_KEY]);
 		$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
 		$SSO_Data = json_decode($SSO_Data);
 		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
-		$_SESSION["SSO_Data"] = $SSO_Data;
+		$_SESSION[self::SESSION_KEY] = $SSO_Data;
 	}
 
 	private function redirect(){
@@ -46,7 +49,7 @@ class SSOClient {
 		exit();
 	}
 
-	public function GetData(){ return $_SESSION["SSO_Data"]; }
+	public function GetData(){ return $_SESSION[self::SESSION_KEY]; }
 
 }
 
