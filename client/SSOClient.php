@@ -4,10 +4,23 @@ class SSONoTokenError extends Exception { }
 
 class SSOClient {
 
-	public static function DoSSO(){
-		if(!defined("SR_SSO_URL")) die("SR_SSO_URL must be defined");
-		if(!defined("SSO_PRIVKEY")) die("SSO_PRIVKEY must be defined");
+	private $url = null;
+	private $private_key = null;
 
+	/**
+	 * Create a new SSOClient.
+	 * @param sso_url: The url of the SSO srever.
+	 * @param sso_private_key: The private key for this client.
+	 */
+	public function __construct($sso_url, $sso_private_key){
+		$this->url = $sso_url;
+		$this->private_key = $sso_private_key;
+
+		if(empty($this->url)) die("The SSO server's url must be provided");
+		if(empty($this->private_key)) die("This client's private key must be defined");
+	}
+
+	public function DoSSO(){
 		session_start();
 		try{
 			if(isset($_SESSION["sr_sso_token"])) return;
@@ -18,21 +31,21 @@ class SSOClient {
 
 			// SSO data is set, we may have a valid postback
 			$SSO_Data = base64_decode($_POST["sso_data"]);
-			$SSO_Data = Crypto::decryptPrivate($SSO_Data, SSO_PRIVKEY);
+			$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
 			$SSO_Data = json_decode($SSO_Data);
 			if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
 			$_SESSION["SSO_Data"] = $SSO_Data;
 
 		}catch(SSONoTokenError $ex){
-			header("Location: " . SR_SSO_URL . "?from=" . 
-				urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]) 
+			header("Location: " . $this->url . "?from=" .
+				urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
 			      );
 			exit();
 		}
 	}
 
-	public static function GetData(){ return $_SESSION["SSO_Data"]; }
+	public function GetData(){ return $_SESSION["SSO_Data"]; }
 
 }
 
