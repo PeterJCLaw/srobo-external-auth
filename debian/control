@@ -7,14 +7,14 @@ Standards-Version: 3.8.0
 
 Package: libsrsso-client
 Architecture: all
-Depends: php
+Depends: php5
 Description: Student Robotics Single Sign On - Client
  This package installs the Student Robotics Single Sign On client libraries
  for use with (for example) the network logon portal.
 
 Package: libsrsso-server
 Architecture: all
-Depends: apache2, php (>= 5.2.0)
+Depends: apache2, php5 (>= 5.2.0)
 Provides: 
 Conflicts: 
 Description: Student Robotics Single Sign On - Server
