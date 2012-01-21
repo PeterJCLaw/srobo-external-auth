@@ -12,3 +12,6 @@ To set up a copy of SSO, you'll need to:
  * Copy your public key into `server/etc/keys/`.
  * Further instructions are in `config.default.php`.
 * Make your client use the matching private key, and set the url to the server.
+
+## Example Client
+There is an example client under `example/`, which demonstrates how the SSOClient class can be used.
