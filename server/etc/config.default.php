@@ -1,6 +1,6 @@
 <?php
 require_once("lib/AuthClient.php");
-require_once("lib/FileAuthProvider.php");
+require_once("lib/JSONFileAuthProvider.php");
 #### COPY THIS FILE TO config.inc.php AND EDIT TO SUIT ####
 
 ## Set up some session stuff
