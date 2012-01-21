@@ -10,9 +10,17 @@ try
 {
 	$client = new SSOClient($sso_url, $sso_key);
 	$client->DoSSO();
-	$data = $client::GetData();
-	echo '<h3>Login successful.</h3>', PHP_EOL;
-	echo 'Data: <pre>'; var_dump($data); echo '</pre>';
+	if (empty($_GET['logout']))
+	{
+		$data = $client::GetData();
+		echo '<h3>Login successful.</h3>', PHP_EOL;
+		echo 'Data: <pre>'; var_dump($data); echo '</pre>';
+		echo '<br /><a href="?logout=1">Logout</a>', PHP_EOL;
+	}
+	else
+	{
+		$client->Logout();
+	}
 }
 catch (Exception $ex)
 {

@@ -51,6 +51,11 @@ class SSOClient {
 
 	public function GetData(){ return $_SESSION[self::SESSION_KEY]; }
 
+	public function Logout(){
+		unset($_SESSION[self::SESSION_KEY]);
+		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
+		exit();
+	}
 }
 
 ### Wrapper around OpenSSL
