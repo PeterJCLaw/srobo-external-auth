@@ -22,27 +22,28 @@ class SSOClient {
 
 	public function DoSSO(){
 		session_start();
-		try{
-			if(isset($_SESSION["sr_sso_token"])) return;
+		if(isset($_SESSION["sr_sso_token"])) return;
 
-			// No token, and no post data.
-			if(!isset($_POST["sso_data"]))
-				throw new SSONoTokenError("No token and no post data");
-
-			// SSO data is set, we may have a valid postback
-			$SSO_Data = base64_decode($_POST["sso_data"]);
-			$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
-			$SSO_Data = json_decode($SSO_Data);
-			if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
-
-			$_SESSION["SSO_Data"] = $SSO_Data;
-
-		}catch(SSONoTokenError $ex){
-			header("Location: " . $this->url . "?from=" .
-				urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
-			      );
-			exit();
+		// No token, and no post data.
+		if(!isset($_POST["sso_data"])){
+			$this->redirect();
+			return;
 		}
+
+		// SSO data is set, we may have a valid postback
+		$SSO_Data = base64_decode($_POST["sso_data"]);
+		$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
+		$SSO_Data = json_decode($SSO_Data);
+		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
+
+		$_SESSION["SSO_Data"] = $SSO_Data;
+	}
+
+	private function redirect(){
+		header("Location: " . $this->url . "?from=" .
+			urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
+			  );
+		exit();
 	}
 
 	public function GetData(){ return $_SESSION["SSO_Data"]; }
