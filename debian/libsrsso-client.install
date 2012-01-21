@@ -1,1 +1,2 @@
 client/SSOClient.php /usr/share/php5/
+client/mkkeypair.sh /usr/share/libsrsso/
