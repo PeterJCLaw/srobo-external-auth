@@ -6,9 +6,9 @@ class SSOClient {
 
 	private $url = null;
 	private $private_key = null;
+	private $session_key = null;
 
 	const POST_KEY = 'sso_data';	// the key the server uses to post data at us.
-	const SESSION_KEY = 'SSO_Data';	// the key we use for data we store in the session.
 
 	/**
 	 * Create a new SSOClient.
@@ -21,11 +21,13 @@ class SSOClient {
 
 		if(empty($this->url)) die("The SSO server's url must be provided");
 		if(empty($this->private_key)) die("This client's private key must be defined");
+
+		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
 	}
 
 	public function DoSSO(){
 		session_start();
-		if(isset($_SESSION[self::SESSION_KEY])) return;
+		if(isset($_SESSION[$this->session_key])) return;
 
 		// No token, and no post data.
 		if(!isset($_POST[self::POST_KEY])){
@@ -39,7 +41,7 @@ class SSOClient {
 		$SSO_Data = json_decode($SSO_Data);
 		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
-		$_SESSION[self::SESSION_KEY] = $SSO_Data;
+		$_SESSION[$this->session_key] = $SSO_Data;
 	}
 
 	private function redirect(){
@@ -49,10 +51,10 @@ class SSOClient {
 		exit();
 	}
 
-	public function GetData(){ return $_SESSION[self::SESSION_KEY]; }
+	public function GetData(){ return $_SESSION[$this->session_key]; }
 
 	public function Logout(){
-		unset($_SESSION[self::SESSION_KEY]);
+		unset($_SESSION[$this->session_key]);
 		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
 		exit();
 	}
