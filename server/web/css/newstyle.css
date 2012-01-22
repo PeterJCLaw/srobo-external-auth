@@ -199,7 +199,8 @@ iframe { display: none; }
 }
 
 #page {
-	width: 100%;
+	margin: 0 auto;
+	width: 75%;
 }
 
 #page div.page {
