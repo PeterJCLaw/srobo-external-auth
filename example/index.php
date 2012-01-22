@@ -12,7 +12,7 @@ try
 	$client->DoSSO();
 	if (empty($_GET['logout']))
 	{
-		$data = $client::GetData();
+		$data = $client->GetData();
 		echo '<h3>Login successful.</h3>', PHP_EOL;
 		echo 'Data: <pre>'; var_dump($data); echo '</pre>';
 		echo '<br /><a href="?logout=1">Logout</a>', PHP_EOL;
