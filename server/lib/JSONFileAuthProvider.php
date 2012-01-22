@@ -34,7 +34,7 @@ class JSONFileAuthProvider extends AuthProvider {
 
 	public function __construct($basePath = "etc/"){
 		$this->usersFile = $basePath . "users.json";
-		$this->groupFile = $basePath . "groups.json";
+		$this->groupsFile = $basePath . "groups.json";
 	}
 
 	private function getUsersData()
