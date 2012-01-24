@@ -8,6 +8,11 @@ if(!isset($_SESSION["Client"])){
 	header("Location: index.php"); //Redirect back to the index.
 }
 
+if(!isset($_SESSION["SSO_Username"])){
+	// user not logged in yet
+	header("Location: index.php"); //Redirect back to the index.
+}
+
 // Get hold of the client.
 $AuthClient = $_SESSION["Client"];
 

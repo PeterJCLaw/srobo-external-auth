@@ -14,7 +14,7 @@ class FileAuthProvider extends AuthProvider {
 
 	public function CheckCredentials($username, $password){
 		$userFile = fopen($this->usersFile, "r");
-		while(!feof($userFile)){
+		while($userFile !== false && !feof($userFile)){
 			$userLine = trim(fgets($userFile));
 			$userLine = explode(":", $userLine);
 			$userLineUsername = $userLine[0];
@@ -25,7 +25,7 @@ class FileAuthProvider extends AuthProvider {
 		}
 		fclose($userFile);
 		return false;
-	} 
+	}
 
 	public function RequireMembership($username, $groupName){
 		return false;
@@ -33,7 +33,7 @@ class FileAuthProvider extends AuthProvider {
 
 	public function GetDisplayName($username){
 		$userFile = fopen($this->usersFile, "r");
-		while(!feof($userFile)){
+		while($userFile !== false && !feof($userFile)){
 			$userLine = trim(fgets($userFile));
 			$userLine = explode(":", $userLine);
 			$userLineUsername = $userLine[0];
@@ -47,7 +47,7 @@ class FileAuthProvider extends AuthProvider {
 	public function GetGroups($username){
 		$groups = array();
 		$groupFile = fopen($this->groupFile, "r");
-		while(!feof($groupFile)){
+		while($groupFile !== false && !feof($groupFile)){
 			$groupLine = trim(fgets($groupFile));
 			$groupLine = explode(":", $groupLine);
 			$groupLineGroupName = $groupLine[0];

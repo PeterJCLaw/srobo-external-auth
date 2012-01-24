@@ -4,36 +4,60 @@ class SSONoTokenError extends Exception { }
 
 class SSOClient {
 
-	public static function DoSSO(){
-		if(!defined("SR_SSO_URL")) die("SR_SSO_URL must be defined");
-		if(!defined("SSO_PRIVKEY")) die("SSO_PRIVKEY must be defined");
+	private $url = null;
+	private $private_key = null;
+	private $session_key = null;
 
-		session_start();
-		try{
-			if(isset($_SESSION["sr_sso_token"])) return;
+	const POST_KEY = 'sso_data';	// the key the server uses to post data at us.
 
-			// No token, and no post data.
-			if(!isset($_POST["sso_data"]))
-				throw new SSONoTokenError("No token and no post data");
+	/**
+	 * Create a new SSOClient.
+	 * @param sso_url: The url of the SSO srever.
+	 * @param sso_private_key: The private key for this client.
+	 */
+	public function __construct($sso_url, $sso_private_key){
+		$this->url = $sso_url;
+		$this->private_key = $sso_private_key;
 
-			// SSO data is set, we may have a valid postback
-			$SSO_Data = base64_decode($_POST["sso_data"]);
-			$SSO_Data = Crypto::decryptPrivate($SSO_Data, SSO_PRIVKEY);
-			$SSO_Data = json_decode($SSO_Data);
-			if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
+		if(empty($this->url)) die("The SSO server's url must be provided");
+		if(empty($this->private_key)) die("This client's private key must be defined");
 
-			$_SESSION["SSO_Data"] = $SSO_Data;
-
-		}catch(SSONoTokenError $ex){
-			header("Location: " . SR_SSO_URL . "?from=" . 
-				urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]) 
-			      );
-			exit();
-		}
+		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
 	}
 
-	public static function GetData(){ return $_SESSION["SSO_Data"]; }
+	public function DoSSO(){
+		session_start();
+		if(isset($_SESSION[$this->session_key])) return;
 
+		// No token, and no post data.
+		if(!isset($_POST[self::POST_KEY])){
+			$this->redirect();
+			return;
+		}
+
+		// SSO data is set, we may have a valid postback
+		$SSO_Data = base64_decode($_POST[self::POST_KEY]);
+		$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
+		$SSO_Data = json_decode($SSO_Data);
+		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
+
+		$_SESSION[$this->session_key] = $SSO_Data;
+	}
+
+	private function redirect(){
+		header("Location: " . $this->url . "?from=" .
+			urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
+			  );
+		exit();
+	}
+
+	public function GetData(){ return $_SESSION[$this->session_key]; }
+
+	public function Logout(){
+		unset($_SESSION[$this->session_key]);
+		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
+		exit();
+	}
 }
 
 ### Wrapper around OpenSSL
