@@ -36,11 +36,11 @@ class IDEAuthProvider {
 			$json = curl_exec($cURL);
 			curl_close($cURL);
 			$data = json_decode($json, true);
-			self::$GroupData[$username] = $data;
+			self::$UserData[$username] = $data;
 			$lockFile = fopen("/tmp/ide-user-data-lock", "w");
 			flock($lockFile, LOCK_EX);
 			fwrite($lockFile, "Locked by PID " . getmypid());
-			file_put_contents("/tmp/ide-user-data", serialize(self::$GroupData));
+			file_put_contents("/tmp/ide-user-data", serialize(self::$UserData));
 			fclose($lockFile);
 			unlink($lockFile);
 			unlink($cookieJar);
