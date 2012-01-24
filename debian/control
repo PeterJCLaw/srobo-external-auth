@@ -1,23 +1,23 @@
-Source: libsrsso
+Source: libsrnetauth
 Section: libs
 Priority: extra
 Maintainer: Chris Malton <cmalton@studentrobotics.org>
 Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 4.2.0), config-package-dev (>= 4.5~)
 Standards-Version: 3.8.0
 
-Package: libsrsso-client
+Package: libsrnetauth-client
 Architecture: all
 Depends: php5
-Description: Student Robotics Single Sign On - Client
- This package installs the Student Robotics Single Sign On client libraries
- for use with (for example) the network logon portal.
+Description: Student Robotics Network Authentication - Client
+ This package installs the Student Robotics Network Authentication client 
+ libraries for use with (for example) the network logon portal.
 
-Package: libsrsso-server
+Package: libsrnetauth-server
 Architecture: all
 Depends: apache2, php5 (>= 5.2.0)
 Provides: 
 Conflicts: 
-Description: Student Robotics Single Sign On - Server
- This package installs the Student Robotics Single Sign On server, which
- contains all the files to allow this computer to act as a Single-Sign-On
- server.
+Description: Student Robotics Network Authentication - Server
+ This package installs the Student Robotics Network Authentication server, 
+ which contains all the files to allow this computer to act as a provider
+ for network authentication for Student Robotics.
