@@ -7,7 +7,7 @@ require_once("lib/AuthProvider.php");
 
 class IDEAuthProvider {
 
-	static UserData;
+	static $UserData;
 	private $IDE_URL;
 
 	public function __construct($IDE_URL){
