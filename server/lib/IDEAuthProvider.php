@@ -60,6 +60,9 @@ class IDEAuthProvider {
 		if(!isset(self::$UserData[$username])) return array();
 		$groups = array();
 		foreach(self::$UserData[$username]["teams"] as $id=>$name){
+			if( ($id > 1000) && (! in_array("mentors", $groups)) ) 
+				$groups[] = "mentors";
+
 			$groups[] = "team-" . $id;
 		}
 		return $groups;
