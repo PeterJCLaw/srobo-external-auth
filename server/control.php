@@ -25,7 +25,6 @@ switch($_SERVER["PATH_INFO"]){
 		if($AuthClient->DoAuthentication($_POST["username"], $_POST["password"])){
 			$_SESSION["AuthToken"] = $AuthClient->CreateToken();
 			$_SESSION["SSO_Username"] = $_POST["username"];
-			$_SESSION["SSO_Password"] = $_POST["password"];
 			$response["status"] = true;
 			$response["next"] = "sso_postback.php";
 		}else{
