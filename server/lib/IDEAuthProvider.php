@@ -47,7 +47,7 @@ class IDEAuthProvider {
 	public function GetGroups($username){
 		if(!isset($_SESSION["user_data_cache"])) return array();
 		$groups = array();
-		foreach(self::$_SESSION["user_data_cache"]["teams"] as $id=>$name){
+		foreach($_SESSION["user_data_cache"]["teams"] as $id=>$name){
 			if( ($id > 1000) && (! in_array("mentors", $groups)) ) 
 				$groups[] = "mentors";
 
