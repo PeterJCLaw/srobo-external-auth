@@ -1,6 +1,7 @@
 <?php
 
 require_once("lib/Crypto.php");
+require_once("lib/ConfigManager.php");
 
 class NoPublicKeyException extends Exception { }
 
@@ -18,7 +19,7 @@ class AuthClient {
 	}
 
 	public function DoAuthentication($username, $password){
-		$ap = $this->GetSetting("AuthProvider");
+		$ap = ConfigManager::GetProvider();
 		if($ap->CheckCredentials($username, $password)){
 			if($this->GetSetting("RequireGroup")){
 				if($ap->RequireMembership($username, $this->GetSetting("RequireGroup"))){
@@ -35,7 +36,7 @@ class AuthClient {
 	}
 
 	public function GetUserDisplayName($username){
-		$ap = $this->GetSetting("AuthProvider");
+		$ap = ConfigManager::GetProvider();
 		return $ap->GetDisplayName($username);
 	}
 
@@ -53,7 +54,7 @@ class AuthClient {
 	*/
 	public function GetSSOData($username){
 		if($this->GetSetting("PublicKey")){
-			$ap = $this->GetSetting("AuthProvider");
+			$ap = ConfigManager::GetProvider();
 			$USER_DATA = array(
 						"groups" => $ap->GetGroups($username),
 						"username" => $username,

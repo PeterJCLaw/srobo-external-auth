@@ -68,3 +68,7 @@ try{
 	</div>
 </body>
 </html>
+<?php
+//We're done with the session data
+session_destroy();
+?>

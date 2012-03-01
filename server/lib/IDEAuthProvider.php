@@ -7,15 +7,9 @@ require_once("lib/AuthProvider.php");
 
 class IDEAuthProvider {
 
-	static $UserData;
 	private $IDE_URL;
 
 	public function __construct($IDE_URL){
-		if(file_exists("/tmp/netauth-ide-user-data")){
-			self::$UserData = unserialize(file_get_contents("/tmp/netauth-ide-user-data"));
-		}else{
-			self::$UserData = array();
-		}
 		$this->IDE_URL = $IDE_URL;
 	}
 
@@ -36,13 +30,7 @@ class IDEAuthProvider {
 			$json = curl_exec($cURL);
 			curl_close($cURL);
 			$data = json_decode($json, true);
-			self::$UserData[$username] = $data;
-			$lockFile = fopen("/tmp/netauth-ide-user-data-lock", "w");
-			flock($lockFile, LOCK_EX);
-			fwrite($lockFile, "Locked by PID " . getmypid());
-			file_put_contents("/tmp/netauth-ide-user-data", serialize(self::$UserData));
-			fclose($lockFile);
-			unlink($lockFile);
+			$_SESSION["user_data_cache"] = $data;
 			unlink($cookieJar);
 			return true;
 		}
@@ -52,14 +40,14 @@ class IDEAuthProvider {
 	}
 
 	public function GetDisplayName($username){
-		if(!isset(self::$UserData[$username])) return "";
-		return self::$UserData[$username]["display-name"];
+		if(!isset($_SESSION["user_data_cache"])) return "";
+		return $_SESSION["user_data_cache"]["display-name"];
 	}
 
 	public function GetGroups($username){
-		if(!isset(self::$UserData[$username])) return array();
+		if(!isset($_SESSION["user_data_cache"])) return array();
 		$groups = array();
-		foreach(self::$UserData[$username]["teams"] as $id=>$name){
+		foreach(self::$_SESSION["user_data_cache"]["teams"] as $id=>$name){
 			if( ($id > 1000) && (! in_array("mentors", $groups)) ) 
 				$groups[] = "mentors";
 

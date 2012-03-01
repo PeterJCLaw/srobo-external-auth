@@ -15,8 +15,10 @@ $client = new AuthClient();
 $client->PutSetting("OriginURL", "http://my.url/");
 $client->PutSetting("LoggedOutURL", "http://my.url/logged_out.php");
 $client->PutSetting("PublicKey", file_get_contents("etc/keys/my_pub_key"));
-$client->PutSetting("AuthProvider", new FileAuthProvider());
 $client->PutSetting("SSO_Title", "Log in name");
 $client->PutSetting("SSO_Subtext", "Log in sub text here");
 ConfigManager::AddClient($client);
+
+ConfigManager::AddProvider(new FileAuthProvider());
+
 ?>
