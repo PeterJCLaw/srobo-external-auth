@@ -31,7 +31,7 @@ class SSOClient {
 
 		// No token, and no post data.
 		if(!isset($_POST[self::POST_KEY])){
-			$this->redirect();
+			$this->redirect($_GET["from"]);
 			return;
 		}
 
@@ -42,10 +42,11 @@ class SSOClient {
 		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
 		$_SESSION[$this->session_key] = $SSO_Data;
+		return $SSO_Data;
 	}
 
-	private function redirect(){
-		header("Location: " . $this->url . "?from=" .
+	private function redirect($originURL){
+		header("Location: " . $this->url . "?originURL=" . urlencode($originURL) . "&from=" .
 			urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
 			  );
 		exit();

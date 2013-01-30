@@ -31,6 +31,7 @@ $AuthClient = $_SESSION["Client"];
 		<strong><?php echo $AuthClient->GetSetting("SSO_Title"); ?></strong> 
 		<em id="login-feedback"><?php echo $AuthClient->GetSetting("SSO_Subtext"); ?></em>
 		<input type="text" name="username" value="username" id="username"> 
+		<input type="hidden" name="originURL" value="<?php echo $_GET["originURL"]; ?>" id="originURL"> 
 		<input type="password" name="password" id="password"> 
 		<button type="submit" id="login-button">Log In</button> 
 		<br /> 

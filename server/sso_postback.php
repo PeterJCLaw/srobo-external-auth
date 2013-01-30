@@ -21,7 +21,7 @@ $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
 
 try{
 	// Get the SSO data to pass to the remote site.
-	$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"]);
+	$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"], $_SESSION["originURL"]);
 }catch(Exception $ex){
 	$_SESSION["SSO_Error"] = $ex;
 	header("Location: sso_error.php");
