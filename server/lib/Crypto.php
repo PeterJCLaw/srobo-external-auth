@@ -5,7 +5,7 @@
 class Crypto {
 
 
-	public function encryptPublic($data, $pubKey){
+	public static function encryptPublic($data, $pubKey){
 		$outData = "";
 		if(openssl_public_encrypt($data, $outData, openssl_pkey_get_public($pubKey))){
 			return $outData;
@@ -13,7 +13,7 @@ class Crypto {
 		return "";
 	}
 
-	public function encryptPrivate($data, $privKey){
+	public static function encryptPrivate($data, $privKey){
 		$outData = "";
 		if(openssl_private_encrypt($data, $outData, openssl_pkey_get_private($privKey))){
 			return $outData;
@@ -21,7 +21,7 @@ class Crypto {
 		return "";
 	}
 
-	public function decryptPublic($data, $pubKey){
+	public static function decryptPublic($data, $pubKey){
 		$outData = "";
 		if(openssl_public_decrypt($data, $outData, openssl_pkey_get_public($pubKey))){
 			return $outData;
@@ -29,7 +29,7 @@ class Crypto {
 		return "";
 	}
 
-	public function decryptPrivate($data, $privKey){
+	public static function decryptPrivate($data, $privKey){
 		$outData = "";
 		if(openssl_private_decrypt($data, $outData, openssl_pkey_get_private($privKey))){
 			return $outData;
