@@ -1,3 +1,8 @@
+libsrnetauth (2013.01) squeeze; urgency=high
+  * Multiple fixes to resolve redirect bug (closing #1431)
+
+ -- Chris Malton <cmalton@studentrobotics.org>  Thu, 07 Feb 2013 17:06:00 +0000
+
 libsrnetauth (0.1) squeeze; urgency=low
   * Initial build of the Student Robotics Network Authentication library
 

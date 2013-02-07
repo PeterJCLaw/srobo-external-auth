@@ -27,7 +27,6 @@ class SSOClient {
 
 	public function DoSSO(){
 		session_start();
-		if(isset($_SESSION[$this->session_key])) return;
 
 		// No token, and no post data.
 		if(!isset($_POST[self::POST_KEY])){
