@@ -54,7 +54,7 @@ try{
 	</div> 
 	<div id='page'>
 		<p>
-			<form action="<?php echo $_SESSION["ReturnURL"]; ?>" method='POST'>
+			<form action="<?php echo $AuthClient->GetSetting("OriginURL"); ?>" method='POST'>
 				<input type='hidden' name='sso_data' value="<?php echo $SSO_Data; ?>" />
 				<div id='info'>
 					<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
