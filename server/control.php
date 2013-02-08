@@ -23,11 +23,8 @@ $response = array();
 switch($_SERVER["PATH_INFO"]){
 	case "/auth/authenticate":
 		if($AuthClient->DoAuthentication($_POST["username"], $_POST["password"])){
-			$_SESSION["AuthToken"] = $AuthClient->CreateToken();
-			$_SESSION["SSO_Username"] = $_POST["username"];
-			$_SESSION["OriginURL"] = $_POST["originURL"];
 			$response["status"] = true;
-			$response["next"] = "sso_postback.php";
+			$response["next"] = "sso_postback.php?originURL=" . urlencode($_POST["originURL"]) . "&SSO_Username=" . $_POST["username"] . "&AuthToken=" . $AuthClient->CreateToken();
 		}else{
 			$response["status"] = false;
 			$response["error"] = array(1, "Invalid username or password");

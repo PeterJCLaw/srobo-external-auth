@@ -17,11 +17,11 @@ if(!isset($_SESSION["SSO_Username"])){
 $AuthClient = $_SESSION["Client"];
 
 // Get the display name through the client.
-$USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
+$USER_DISPLAY = $AuthClient->GetUserDisplayName($_GET["SSO_Username"]);
 
 try{
 	// Get the SSO data to pass to the remote site.
-	$SSO_Data = $AuthClient->GetSSOData($_SESSION["SSO_Username"], $_SESSION["originURL"]);
+	$SSO_Data = $AuthClient->GetSSOData($_GET["SSO_Username"], $_GET["originURL"]);
 }catch(Exception $ex){
 	$_SESSION["SSO_Error"] = $ex;
 	header("Location: sso_error.php");
