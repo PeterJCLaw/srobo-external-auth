@@ -32,8 +32,9 @@ function Login() {
 
 		var user = $("username").value;
 		var pass = $("password").value;
+		var originURL = $("originURL").value;
 
-		IDE_backend_request("auth/authenticate", {username: user, password: pass },
+		IDE_backend_request("auth/authenticate", {username: user, password: pass, originURL: originURL },
 			function(rp){ window.location.href = rp.next; },
 			bind(function(errcode, errmsg) {
 				status_msg(errmsg, LEVEL_WARN);
