@@ -14,7 +14,6 @@ $AuthClient->PutSetting("PublicKey", $_GET["clientKey"]);
 
 // Get the display name through the client.
 $USER_DISPLAY = $AuthClient->GetUserDisplayName($_GET["SSO_Username"]);
-var_dump($_SESSION);
 try{
 	// Get the SSO data to pass to the remote site.
 	$SSO_Data = $AuthClient->GetSSOData($_GET["SSO_Username"]);
