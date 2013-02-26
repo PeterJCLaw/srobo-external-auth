@@ -15,12 +15,14 @@ class SSOClient {
 	 * @param sso_url: The url of the SSO srever.
 	 * @param sso_private_key: The private key for this client.
 	 */
-	public function __construct($sso_url, $sso_private_key){
+	public function __construct($sso_url, $sso_private_key, $sso_public_key){
 		$this->url = $sso_url;
 		$this->private_key = $sso_private_key;
+		$this->public_key = $sso_public_key;
 
 		if(empty($this->url)) die("The SSO server's url must be provided");
 		if(empty($this->private_key)) die("This client's private key must be defined");
+		if(empty($this->public_key)) die("This client's private key must be defined");
 
 		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
 	}
@@ -45,9 +47,7 @@ class SSOClient {
 	}
 
 	private function redirect($originURL){
-		header("Location: " . $this->url . "?originURL=" . urlencode($originURL) . "&from=" .
-			urlencode( (isset($_SERVER["HTTPS"]) ? "https://" : "http://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"])
-			  );
+		header("Location: " . $this->url . "?clientURL=" . urlencode($_SERVER["PHP_SELF"]) . "&clientKey=" . urlencode(Crypto::StripKeyHeaders($this->public_key)));
 		exit();
 	}
 
@@ -96,6 +96,16 @@ class Crypto {
 		}
 		return "";
 	}
+
+    public static function StripKeyHeaders($inKeyText){
+        $out = "";
+        foreach(split("\n", $inKeyText) as $line){
+            if($line == "-----BEGIN PUBLIC KEY-----"){ $inKey = true; continue; }
+            if($line == "-----END PUBLIC KEY-----"){ $inKey = false; continue; }
+            if($inKey) $out .= trim($line);
+        }
+        return $out;
+    }
 
 }
 

@@ -1,27 +1,23 @@
 <?php
 
 require_once("lib/ConfigManager.php");
-
 session_start();
-if(!isset($_SESSION["Client"])){
-	// Oops - no client class available
-	header("Location: index.php"); //Redirect back to the index.
-}
 
 if(!isset($_GET["SSO_Username"])){
 	// user not logged in yet
 	header("Location: index.php"); //Redirect back to the index.
 }
 
-// Get hold of the client.
-$AuthClient = $_SESSION["Client"];
+$AuthClient = new AuthClient();
+$AuthClient->PutSetting("ClientURL", $_GET["clientURL"]);
+$AuthClient->PutSetting("PublicKey", $_GET["clientKey"]);
 
 // Get the display name through the client.
 $USER_DISPLAY = $AuthClient->GetUserDisplayName($_GET["SSO_Username"]);
-
+var_dump($_SESSION);
 try{
 	// Get the SSO data to pass to the remote site.
-	$SSO_Data = $AuthClient->GetSSOData($_GET["SSO_Username"], $_GET["originURL"]);
+	$SSO_Data = $AuthClient->GetSSOData($_GET["SSO_Username"]);
 }catch(Exception $ex){
 	$_SESSION["SSO_Error"] = $ex;
 	header("Location: sso_error.php");
@@ -54,11 +50,10 @@ try{
 	</div> 
 	<div id='page'>
 		<p>
-			<form action="<?php echo $AuthClient->GetSetting("OriginURL"); ?>" method='POST'>
+			<form action="<?php echo $AuthClient->GetSetting("ClientURL"); ?>" method='POST'>
 				<input type='hidden' name='sso_data' value="<?php echo $SSO_Data; ?>" />
 				<div id='info'>
-					<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.
-					Your single-sign-on session will continue for one hour, after which you will be prompted for a username and password again.</p>
+					<p>You have now been logged in to Student Robotics.  Click the button below to return to the site you came from.</p>
 					<p>When you click the button below, you may recieve a warning about posting data to a remote site.
 					This is to be expected - because it's <b>exactly</b> what you are trying to do!</p>
 				</div>
@@ -68,7 +63,3 @@ try{
 	</div>
 </body>
 </html>
-<?php
-//We're done with the session data
-session_destroy();
-?>

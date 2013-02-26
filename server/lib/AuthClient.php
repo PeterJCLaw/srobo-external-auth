@@ -52,16 +52,17 @@ class AuthClient {
 		A crypted string of all the user data as needed.
 		This string is encrypted using the public key of the AuthClient
 	*/
-	public function GetSSOData($username, $originURL){
+	public function GetSSOData($username){
 		if($this->GetSetting("PublicKey")){
+            $key = $this->GetSetting("PublicKey");
+            $key = "-----BEGIN PUBLIC KEY-----\n" . chunk_split($key, 64, "\n") . "-----END PUBLIC KEY-----";
 			$ap = ConfigManager::GetProvider();
 			$USER_DATA = array(
 						"groups" => $ap->GetGroups($username),
 						"username" => $username,
 						"displayName" => $this->GetUserDisplayName($username),
-						"originURL" => $originURL
 					);
-			return base64_encode(Crypto::encryptPublic(json_encode($USER_DATA), $this->GetSetting("PublicKey")));
+			return base64_encode(Crypto::encryptPublic(json_encode($USER_DATA), $key));
 		}else{
 			throw new NoPublicKeyException("No public key was given for the AuthClient in use.");
 		}
