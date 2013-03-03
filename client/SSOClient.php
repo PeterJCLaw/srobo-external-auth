@@ -22,7 +22,7 @@ class SSOClient {
 
 		if(empty($this->url)) die("The SSO server's url must be provided");
 		if(empty($this->private_key)) die("This client's private key must be defined");
-		if(empty($this->public_key)) die("This client's private key must be defined");
+		if(empty($this->public_key)) die("This client's public key must be defined");
 
 		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
 	}
