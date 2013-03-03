@@ -14,6 +14,7 @@ class SSOClient {
 	 * Create a new SSOClient.
 	 * @param sso_url: The url of the SSO srever.
 	 * @param sso_private_key: The private key for this client.
+	 * @param sso_public_key: The public key for this client.
 	 */
 	public function __construct($sso_url, $sso_private_key, $sso_public_key){
 		$this->url = $sso_url;
