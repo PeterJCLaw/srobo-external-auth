@@ -54,8 +54,8 @@ class AuthClient {
 	*/
 	public function GetSSOData($username){
 		if($this->GetSetting("PublicKey")){
-            $key = $this->GetSetting("PublicKey");
-            $key = "-----BEGIN PUBLIC KEY-----\n" . chunk_split($key, 64, "\n") . "-----END PUBLIC KEY-----";
+			$key = $this->GetSetting("PublicKey");
+			$key = "-----BEGIN PUBLIC KEY-----\n" . chunk_split($key, 64, "\n") . "-----END PUBLIC KEY-----";
 			$ap = ConfigManager::GetProvider();
 			$USER_DATA = array(
 						"groups" => $ap->GetGroups($username),
