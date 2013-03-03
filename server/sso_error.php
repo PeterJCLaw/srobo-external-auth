@@ -33,7 +33,6 @@ $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
 	<script src="web/javascript/ide.js" type="text/javascript"></script>
 	<script src="web/javascript/MochiKit.js" type="text/javascript"></script>
 	<script src="web/javascript/status.js" type="text/javascript"></script>
-	<script src="web/javascript/dashboard.js" type="text/javascript"></script>
 	<title>Student Robotics Login Error</title>
 </head>
 <body>
