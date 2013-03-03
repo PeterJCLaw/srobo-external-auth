@@ -29,8 +29,6 @@ class SSOClient {
 	}
 
 	public function DoSSO(){
-		session_start();
-
 		// No token, and no post data.
 		if(!isset($_POST[self::POST_KEY])){
 			$this->redirectToLoginPage();
@@ -43,7 +41,7 @@ class SSOClient {
 		$SSO_Data = json_decode($SSO_Data);
 		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
-		$_SESSION[$this->session_key] = $SSO_Data;
+		$this->saveData($SSO_Data);
 		return $SSO_Data;
 	}
 
@@ -53,10 +51,27 @@ class SSOClient {
 		exit();
 	}
 
+	/**
+	 * If you'd like to use a different mechanism to save the data returned
+	 * create a derived class and override this, clearData & GetData.
+	 */
+	protected function saveData($SSO_Data){
+		session_start();
+		$_SESSION[$this->session_key] = $SSO_Data;
+	}
+
+	/**
+	 * If you'd like to use a different mechanism to save the data returned
+	 * create a derived class and override this, saveData & GetData.
+	 */
+	protected function clearData(){
+		unset($_SESSION[$this->session_key]);
+	}
+
 	public function GetData(){ return $_SESSION[$this->session_key]; }
 
 	public function Logout(){
-		unset($_SESSION[$this->session_key]);
+		$this->clearData();
 		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
 		exit();
 	}
