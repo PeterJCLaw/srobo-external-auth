@@ -28,13 +28,26 @@ class SSOClient {
 		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
 	}
 
+	/**
+	 * Helper function that wraps a simple usage of this client.
+	 * Assumes that you either want to login, or are on the postback.
+	 */
 	public function DoSSO(){
 		// No token, and no post data.
-		if(!isset($_POST[self::POST_KEY])){
-			$this->redirectToLoginPage();
+		if(!$this->IsPostback()){
+			$this->RedirectToLoginPage();
 			return null;
 		}
 
+		$SSO_Data = $this->HandlePostback();
+		return $SSO_Data;
+	}
+
+	public function IsPostback(){
+		return isset($_POST[self::POST_KEY]);
+	}
+
+	public function HandlePostback(){
 		// SSO data is set, we may have a valid postback
 		$SSO_Data = base64_decode($_POST[self::POST_KEY]);
 		$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
@@ -45,7 +58,7 @@ class SSOClient {
 		return $SSO_Data;
 	}
 
-	private function redirectToLoginPage(){
+	public function RedirectToLoginPage(){
 		$currentURL = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 		header("Location: " . $this->url . "?clientURL=" . urlencode($currentURL) . "&clientKey=" . urlencode(Crypto::StripKeyHeaders($this->public_key)));
 		exit();
