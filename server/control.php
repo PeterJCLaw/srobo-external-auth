@@ -36,4 +36,3 @@ switch($_SERVER["PATH_INFO"]){
 }
 
 echo json_encode($response);
-?>

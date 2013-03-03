@@ -1,6 +1,5 @@
 <?php
 
-
 class ConfigManager {
 
 	private static $Clients = array();
@@ -27,4 +26,3 @@ class ConfigManager {
 }
 
 require_once("etc/config.inc.php");
-?>

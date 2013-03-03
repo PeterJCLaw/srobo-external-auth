@@ -20,5 +20,3 @@ $client->PutSetting("SSO_Subtext", "Log in sub text here");
 ConfigManager::AddClient($client);
 
 ConfigManager::AddProvider(new FileAuthProvider());
-
-?>

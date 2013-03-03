@@ -28,7 +28,7 @@ class AuthClient {
 					return false;
 				}
 			}else{
-				return true;	
+				return true;
 			}
 		}else{
 			return false;
@@ -44,7 +44,7 @@ class AuthClient {
 		return sha1(microtime());
 	}
 
-	/* 
+	/*
 	Function: GetSSOData
 	Parameters:
 		None
@@ -67,6 +67,5 @@ class AuthClient {
 			throw new NoPublicKeyException("No public key was given for the AuthClient in use.");
 		}
 	}
-}
 
-?>
+}

@@ -48,13 +48,12 @@ class IDEAuthProvider {
 		if(!isset($_SESSION["user_data_cache"])) return array();
 		$groups = array();
 		foreach($_SESSION["user_data_cache"]["teams"] as $id=>$name){
-			if( ($id > 1000) && (! in_array("mentors", $groups)) ) 
+			if( ($id > 1000) && (! in_array("mentors", $groups)) )
 				$groups[] = "mentors";
 
 			$groups[] = "team-" . $id;
 		}
 		return $groups;
 	}
-}
 
-?>
+}

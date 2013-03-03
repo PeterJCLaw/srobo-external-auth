@@ -59,12 +59,12 @@ class SSOClient {
 		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
 		exit();
 	}
+
 }
 
 ### Wrapper around OpenSSL
 
 class Crypto {
-
 
 	public function encryptPublic($data, $pubKey){
 		$outData = "";
@@ -98,16 +98,14 @@ class Crypto {
 		return "";
 	}
 
-    public static function StripKeyHeaders($inKeyText){
-        $out = "";
-        foreach(split("\n", $inKeyText) as $line){
-            if($line == "-----BEGIN PUBLIC KEY-----"){ $inKey = true; continue; }
-            if($line == "-----END PUBLIC KEY-----"){ $inKey = false; continue; }
-            if($inKey) $out .= trim($line);
-        }
-        return $out;
-    }
+	public static function StripKeyHeaders($inKeyText){
+		$out = "";
+		foreach(split("\n", $inKeyText) as $line){
+			if($line == "-----BEGIN PUBLIC KEY-----"){ $inKey = true; continue; }
+			if($line == "-----END PUBLIC KEY-----"){ $inKey = false; continue; }
+			if($inKey) $out .= trim($line);
+		}
+		return $out;
+	}
 
 }
-
-?>

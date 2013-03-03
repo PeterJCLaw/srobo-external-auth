@@ -8,5 +8,3 @@ abstract class AuthProvider {
 	public abstract function GetGroups($username);
 
 }
-
-?>
