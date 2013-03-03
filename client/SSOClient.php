@@ -32,8 +32,8 @@ class SSOClient {
 
 		// No token, and no post data.
 		if(!isset($_POST[self::POST_KEY])){
-			$this->redirect($_GET["from"]);
-			return;
+			$this->redirectToLoginPage();
+			return null;
 		}
 
 		// SSO data is set, we may have a valid postback
@@ -46,7 +46,7 @@ class SSOClient {
 		return $SSO_Data;
 	}
 
-	private function redirect($originURL){
+	private function redirectToLoginPage(){
 		$currentURL = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 		header("Location: " . $this->url . "?clientURL=" . urlencode($currentURL) . "&clientKey=" . urlencode(Crypto::StripKeyHeaders($this->public_key)));
 		exit();
