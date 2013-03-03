@@ -20,7 +20,7 @@ if($_GET["clientKey"] == ""){
 	<script src="web/javascript/MochiKit.js" type="text/javascript"></script>
 	<script src="web/javascript/status.js" type="text/javascript"></script>
 	<script src="web/javascript/login.js" type="text/javascript"></script>
-	<title>Student Robotics Network Login</title>
+	<title>Student Robotics Login</title>
 </head>
 <body id="login-back">
 	<form id="login-box" method="POST" action="sso.php">

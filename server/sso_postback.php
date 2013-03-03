@@ -37,7 +37,7 @@ try{
 	<script src="web/javascript/MochiKit.js" type="text/javascript"></script>
 	<script src="web/javascript/status.js" type="text/javascript"></script>
 	<script src="web/javascript/dashboard.js" type="text/javascript"></script>
-	<title>Student Robotics - Competition dashboard</title>
+	<title>Student Robotics Login Successful</title>
 </head>
 <body>
 	<div id="top">
