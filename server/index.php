@@ -1,12 +1,3 @@
-<?php
-require_once("lib/ConfigManager.php");
-
-if($_GET["clientKey"] == ""){
-	header("Location: no_key.php");
-	exit(0);
-}
-
-?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,6 +16,18 @@ if($_GET["clientKey"] == ""){
 <body id="login-back">
 	<form id="login-box" method="POST" action="sso.php">
 		<strong>Student Robotics Authentication</strong>
+<?php
+if(@$_GET["clientKey"] == ""){
+?>
+		<em id="login-feedback">Unable to identify source of login request.</em>
+		<br />
+		<p id="error-guidance">
+			Please return to the application that you were attempting to login to, and try again.
+			If the problem persists, please report the error to that application's bug tracker.
+		</p>
+<?php
+}else{	// if clientKey
+?>
 		<em id="login-feedback">Use your IDE username and password to log in</em>
 		<input type="hidden" name="clientURL" value="<?php echo $_GET["clientURL"]; ?>" id="clientURL">
 		<input type="hidden" name="clientKey" value="<?php echo $_GET["clientKey"]; ?>" id="clientKey">
@@ -32,6 +35,7 @@ if($_GET["clientKey"] == ""){
 		<input type="password" name="password" id="password">
 		<button type="submit" id="login-button">Log In</button>
 		<br />
+<?php }	// end if clientKey ?>
 		<!--<a href="https://www.studentrobotics.org/forgotpassword/">&raquo; Forgotten password</a> -->
 	</form>
 

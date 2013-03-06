@@ -279,6 +279,9 @@ a.button:hover, #login-box #login-button:hover {
 	color: #253571;
 	background-color: #ffffff;
 }
+#login-box #error-guidance {
+	font-size: 0.7em;
+}
 
 #teamname {
 	font-weight: bold;
