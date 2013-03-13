@@ -17,25 +17,16 @@
 	<form id="login-box" method="POST" action="sso.php">
 		<strong>Student Robotics Authentication</strong>
 <?php
-if(@$_GET["clientKey"] == ""){
-?>
-		<em id="login-feedback">Unable to identify source of login request.</em>
-		<br />
-		<p id="error-guidance">
-			Please return to the application that you were attempting to login to, and try again.
-			If the problem persists, please report the error to that application's bug tracker.
-		</p>
-<?php
-}else{	// if clientKey
+if(@$_GET["clientURL"] == ""){
+    $_GET["clientURL"] = "https://www.studentrobotics.org";
+}
 ?>
 		<em id="login-feedback">Use your IDE username and password to log in</em>
 		<input type="hidden" name="clientURL" value="<?php echo $_GET["clientURL"]; ?>" id="clientURL">
-		<input type="hidden" name="clientKey" value="<?php echo $_GET["clientKey"]; ?>" id="clientKey">
 		<input type="text" name="username" value="username" id="username">
 		<input type="password" name="password" id="password">
 		<button type="submit" id="login-button">Log In</button>
 		<br />
-<?php }	// end if clientKey ?>
 		<!--<a href="https://www.studentrobotics.org/forgotpassword/">&raquo; Forgotten password</a> -->
 	</form>
 

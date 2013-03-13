@@ -32,10 +32,9 @@ function Login() {
 
 		var user = $("username").value;
 		var pass = $("password").value;
-		var clientKey = $("clientKey").value;
 		var clientURL = $("clientURL").value;
 
-		IDE_backend_request("auth/authenticate", {username: user, password: pass, clientKey: clientKey, clientURL: clientURL },
+		IDE_backend_request("auth/authenticate", {username: user, password: pass, clientURL: clientURL },
 			function(rp){ window.location.href = rp.next; },
 			bind(function(errcode, errmsg) {
 				status_msg(errmsg, LEVEL_WARN);

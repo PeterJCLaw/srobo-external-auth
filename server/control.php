@@ -17,14 +17,13 @@ $_POST = array_merge($_POST,$decoded);
 
 $AuthClient = new AuthClient();
 $AuthClient->PutSetting("ClientURL", $_POST["clientURL"]);
-$AuthClient->PutSetting("PublicKey", $_POST["clientKey"]);
 $response = array();
 
 switch($_SERVER["PATH_INFO"]){
 	case "/auth/authenticate":
 		if($AuthClient->DoAuthentication($_POST["username"], $_POST["password"])){
 			$response["status"] = true;
-			$response["next"] = "sso_postback.php?clientURL=" . urlencode($_POST["clientURL"]) . "&clientKey=" . urlencode($_POST["clientKey"]) . "&SSO_Username=" . $_POST["username"] . "&AuthToken=" . $AuthClient->CreateToken();
+			$response["next"] = "sso_postback.php?clientURL=" . urlencode($_POST["clientURL"]) . "&SSO_Username=" . $_POST["username"] . "&AuthToken=" . $AuthClient->CreateToken();
 		}else{
 			$response["status"] = false;
 			$response["error"] = array(1, "Invalid username or password");
@@ -33,6 +32,10 @@ switch($_SERVER["PATH_INFO"]){
 	case "/auth/deauthenticate":
 		session_destroy();
 		header("Location: " . $AuthClient->GetSetting("LoggedOutURL"));
+		break;
+    case "/keys/get_public":
+    	echo ConfigManager::GetPublicKey();
+        exit();
 }
 
 echo json_encode($response);

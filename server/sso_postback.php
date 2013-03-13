@@ -10,7 +10,6 @@ if(!isset($_GET["SSO_Username"])){
 
 $AuthClient = new AuthClient();
 $AuthClient->PutSetting("ClientURL", $_GET["clientURL"]);
-$AuthClient->PutSetting("PublicKey", $_GET["clientKey"]);
 
 // Get the display name through the client.
 $USER_DISPLAY = $AuthClient->GetUserDisplayName($_GET["SSO_Username"]);

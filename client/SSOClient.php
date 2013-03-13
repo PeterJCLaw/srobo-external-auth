@@ -13,19 +13,16 @@ class SSOClient {
 	/**
 	 * Create a new SSOClient.
 	 * @param sso_url: The url of the SSO srever.
-	 * @param sso_private_key: The private key for this client.
-	 * @param sso_public_key: The public key for this client.
+	 * @param sso_public_key: The public key of the SSO server.
 	 */
-	public function __construct($sso_url, $sso_private_key, $sso_public_key){
+	public function __construct($sso_url, $sso_public_key){
 		$this->url = $sso_url;
-		$this->private_key = $sso_private_key;
 		$this->public_key = $sso_public_key;
 
 		if(empty($this->url)) die("The SSO server's url must be provided");
-		if(empty($this->private_key)) die("This client's private key must be defined");
-		if(empty($this->public_key)) die("This client's public key must be defined");
+		if(empty($this->public_key)) die("This server's public key must be defined");
 
-		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->private_key);
+		$this->session_key = 'SSO-Data-'.sha1($this->url.$this->public_key);
 	}
 
 	/**
@@ -50,7 +47,7 @@ class SSOClient {
 	public function HandlePostback(){
 		// SSO data is set, we may have a valid postback
 		$SSO_Data = base64_decode($_POST[self::POST_KEY]);
-		$SSO_Data = Crypto::decryptPrivate($SSO_Data, $this->private_key);
+		$SSO_Data = Crypto::decryptPublic($SSO_Data, $this->public_key);
 		$SSO_Data = json_decode($SSO_Data);
 		if($SSO_Data == NULL) throw new SSONoTokenError("No valid data sent");
 
@@ -63,7 +60,7 @@ class SSOClient {
 			// default to the current page
 			$postbackURL = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 		}
-		header("Location: " . $this->url . "?clientURL=" . urlencode($postbackURL) . "&clientKey=" . urlencode(Crypto::StripKeyHeaders($this->public_key)));
+		header("Location: " . $this->url . "?clientURL=" . urlencode($postbackURL));
 		exit();
 	}
 

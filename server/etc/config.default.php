@@ -7,16 +7,8 @@ require_once("lib/JSONFileAuthProvider.php");
 ini_set("session.save_path", dirname(__FILE__) . "/../sessions/");
 ini_set("session.gc_maxlifetime", 3600); //1 hour session time
 
-## To add an authentication client copy the line below and edit to suit
-## http://my.url/ should be replaced with the referer URL, and the Public Key
-## (created by genkeypair.php) should be pasted into "PublicKeyHere".
-## AuthProvider an instance of an auth provider
-$client = new AuthClient();
-$client->PutSetting("OriginURL", "http://my.url/");
-$client->PutSetting("LoggedOutURL", "http://my.url/logged_out.php");
-$client->PutSetting("PublicKey", file_get_contents("etc/keys/my_pub_key"));
-$client->PutSetting("SSO_Title", "Log in name");
-$client->PutSetting("SSO_Subtext", "Log in sub text here");
-ConfigManager::AddClient($client);
+$priv_key = file_get_contents(dirname(__FILE__) . "/keys/ext-auth");
+$pub_key = file_get_contents(dirname(__FILE__) . "/keys/ext-auth.pub");
 
+ConfigManager::SetKeys($priv_key, $pub_key);
 ConfigManager::SetProvider(new JSONFileAuthProvider());

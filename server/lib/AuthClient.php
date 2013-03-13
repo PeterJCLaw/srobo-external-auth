@@ -44,6 +44,16 @@ class AuthClient {
 		return sha1(microtime());
 	}
 
+    private function _GetSSOData($username){
+    	$ap = ConfigManager::GetProvider();
+		$USER_DATA = array(
+				"groups" => $ap->GetGroups($username),
+				"username" => $username,
+				"displayName" => $this->GetUserDisplayName($username),
+			);
+        return $USER_DATA;
+    }
+
 	/*
 	Function: GetSSOData
 	Parameters:
@@ -53,18 +63,28 @@ class AuthClient {
 		This string is encrypted using the public key of the AuthClient
 	*/
 	public function GetSSOData($username){
-		if($this->GetSetting("PublicKey")){
-			$key = $this->GetSetting("PublicKey");
-			$key = "-----BEGIN PUBLIC KEY-----\n" . chunk_split($key, 64, "\n") . "-----END PUBLIC KEY-----";
-			$ap = ConfigManager::GetProvider();
-			$USER_DATA = array(
-						"groups" => $ap->GetGroups($username),
-						"username" => $username,
-						"displayName" => $this->GetUserDisplayName($username),
-					);
-			return base64_encode(Crypto::encryptPublic(json_encode($USER_DATA), $key));
+		if(ConfigManager::GetPrivateKey() != ""){
+			$key = ConfigManager::GetPrivateKey();
+			return base64_encode(Crypto::encryptPrivate(json_encode($this->_GetSSOData($username)), $key));
 		}else{
-			throw new NoPublicKeyException("No public key was given for the AuthClient in use.");
+			throw new NoPublicKeyException("No private key was given for the server to use.");
+		}
+	}
+	
+	/*
+	Function: GetSSOSignature
+	Parameters:
+		None
+	Returns:
+		A crypted string of all the user data as needed.
+		This string is encrypted using the public key of the AuthClient
+	*/
+	public function GetSSOSignature($username){
+		if(ConfigManager::GetPrivateKey() != ""){
+			$key = ConfigManager::GetPrivateKey();
+			return base64_encode(Crypto::sign(json_encode($this->_GetSSOData()), $key));
+		}else{
+			throw new NoPublicKeyException("No private key was given for the server to use.");
 		}
 	}
 

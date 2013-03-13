@@ -8,17 +8,6 @@ if(!isset($_SESSION["SSO_Error"])){
 	header("Location: index.php"); //Redirect back to the index.
 }
 
-if(!isset($_SESSION["Client"])){
-	// Oops - no client class available
-	header("Location: index.php"); //Redirect back to the index.
-}
-
-// Get hold of the client.
-$AuthClient = $_SESSION["Client"];
-
-// Get the display name through the client.
-$USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
-
 // Render an error page.
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -38,8 +27,8 @@ $USER_DISPLAY = $AuthClient->GetUserDisplayName($_SESSION["SSO_Username"]);
 <body>
 	<div id="top">
 		<ul id="topleft">
-			<li><a href="control.php/auth/deauthenticate" id="logout-button">Logout</a></li>
-			<li id="teaminfo">Welcome, <?php echo $USER_DISPLAY; ?></li>
+<!--			<li><a href="control.php/auth/deauthenticate" id="logout-button">Logout</a></li>
+			<li id="teaminfo">Welcome, <?php echo $USER_DISPLAY; ?></li>-->
 		</ul>
 		<div id="static-box"><img src="web/images/static.png" alt="logo"></div>
 	</div>

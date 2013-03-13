@@ -1,15 +1,13 @@
 <?php
 
 $sso_url = dirname($_SERVER["PHP_SELF"]) . '/../server/';
-$sso_priv_key_path = 'example_keys/example';
-$sso_key = file_get_contents($sso_priv_key_path);
-$sso_key_pub = file_get_contents($sso_priv_key_path . ".pub");
+$sso_key_pub = file_get_contents("example_keys/external-auth.pub");
 
 require_once('../client/SSOClient.php');
 
 try
 {
-	$client = new SSOClient($sso_url, $sso_key, $sso_key_pub);
+	$client = new SSOClient($sso_url, $sso_key_pub);
 	$client->DoSSO();
 	if (empty($_GET['logout']))
 	{
