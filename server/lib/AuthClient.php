@@ -44,15 +44,15 @@ class AuthClient {
 		return sha1(microtime());
 	}
 
-    private function _GetSSOData($username){
-    	$ap = ConfigManager::GetProvider();
+	private function _GetSSOData($username){
+		$ap = ConfigManager::GetProvider();
 		$USER_DATA = array(
 				"groups" => $ap->GetGroups($username),
 				"username" => $username,
 				"displayName" => $this->GetUserDisplayName($username),
 			);
-        return $USER_DATA;
-    }
+		return $USER_DATA;
+	}
 
 	/*
 	Function: GetSSOData
@@ -70,7 +70,7 @@ class AuthClient {
 			throw new NoPublicKeyException("No private key was given for the server to use.");
 		}
 	}
-	
+
 	/*
 	Function: GetSSOSignature
 	Parameters:

@@ -33,9 +33,9 @@ switch($_SERVER["PATH_INFO"]){
 		session_destroy();
 		header("Location: " . $AuthClient->GetSetting("LoggedOutURL"));
 		break;
-    case "/keys/get_public":
-    	echo ConfigManager::GetPublicKey();
-        exit();
+	case "/keys/get_public":
+		echo ConfigManager::GetPublicKey();
+		exit();
 }
 
 echo json_encode($response);
