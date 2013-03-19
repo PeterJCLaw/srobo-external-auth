@@ -83,12 +83,13 @@ class SSOClient {
 
 	public function GetData(){ return $_SESSION[$this->session_key]; }
 
+	/**
+	 * Even if your client isn't using this as a data store, you should
+	 * call this when you logout your user to avoid the data hanging around.
+	 */
 	public function Logout(){
 		$this->clearData();
-		header('Location: ' . $this->url . '/control.php/auth/deauthenticate');
-		exit();
 	}
-
 }
 
 ### Wrapper around OpenSSL
