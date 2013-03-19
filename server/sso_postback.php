@@ -29,12 +29,6 @@ try{
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 	<!-- Style Sheets -->
 	<link rel="stylesheet" href="web/css/newstyle.css" type="text/css">
-	<!-- Javascript Source Files -->
-	<script src="web/javascript/base64.js" type="text/javascript"></script>
-	<script src="web/javascript/json2.js" type="text/javascript"></script>
-	<script src="web/javascript/ide.js" type="text/javascript"></script>
-	<script src="web/javascript/MochiKit.js" type="text/javascript"></script>
-	<script src="web/javascript/status.js" type="text/javascript"></script>
 	<title>Student Robotics Login Successful</title>
 </head>
 <body>
